@@ -1,0 +1,19 @@
+<html>
+<head>
+<title>Volume Helper</title>
+</head>
+<body>
+    <h1>Small Volume Helper</h1>
+Volume <input type="text" value=""/>
+
+<div id="dbValue">dB</div>
+
+
+<script>
+
+function volumeToDB(volumePercentage) {
+    return 10*Math.log(volumePercentage/100)/Math.log(2);
+}
+</script>
+</body>
+</html>
