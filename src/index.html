@@ -1,4 +1,4 @@
-<html>
+<html lang="en">
 <head>
 <title>Volume Helper</title>
 <style>
@@ -11,35 +11,132 @@
   #errorMsg {
     color: red;
   }
+
+input,
+button {
+  width: 175px;
+  height: 30px;
+  border-radius: 3px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 7px;
+  border: 2px solid purple;
+}
+
+input[type="file"]{
+  border: none;
+}
+
+button {
+  background-color: #800080;
+  color: white;
+  box-sizing: content-box;
+  margin-top: 15px;
+  cursor: pointer;
+}
+
+
+audio {
+  width: 300px;
+  height: 40px;
+  margin-top: 10px;
+}
+
+
 </style>
 </head>
 <body>
-    <h1> Volume Helper</h1>
-    <div>Volume (1 - 100): <input id="volumeInput" type="number" value=""/> <input id="volumeConvert" type="button" value="Convert"/><span id="errorMsg"></span></div> 
+    <h1>Volume Helper</h1>
+    <div>Volume (1 - 100): <input id="volumeInput" type="number" value=""/> 
+      <input id="volumeConvert" type="button" value="Convert"/>
+      <input id="setAudioVolume" type="button" value="Set Audio Volume"/>
+      <span id="errorMsg"></span>
+    </div> 
     <div>Decibels: <input id="decibelsResult" type="number" readonly/></div>
+    <hr>
+    <div>
+      <figcaption>Uploaded Audio:</figcaption>
+      <audio class="aud"
+          controls
+          src="Modern Attempt - TrackTribe.mp3">
+              Your browser does not support the
+              <code>audio</code> element.
+      </audio>
+
+      <button onclick="getVolume()" type="button">What is the volume?</button>
+      <button onclick="setHalfVolume()" type="button">Set volume to 50%</button>
+      <button onclick="setFullVolume()" type="button">Set volume to 100%</button><br> 
+    </div>
+    <div>
+      <label>Upload Audio:<br />
+          <input type='file' accept="audio/*" placeholder="" class="aud">
+      </label>
+      <input id="uploadAudio" type="button" value="Upload Audio"/>
+    </div>
+
+    
+
 <script>
 
-const volumeConvert = document.getElementById('volumeConvert');
-volumeConvert.addEventListener('click', (event) => {
+document.getElementById('volumeConvert').addEventListener('click', (event) => {
   document.getElementById('errorMsg').textContent = "";
-  
-  const decibelsResult = document.getElementById('decibelsResult');
   const volumeInput = document.getElementById('volumeInput');
-
   let volumePercentage = volumeInput.value;
   
   if(volumePercentage < 1){
     document.getElementById('errorMsg').textContent = "Error: input must > 0"; 
     return;
   }
+  convertAndDisplayVolumeInDecibels(volumePercentage);
+});
 
+function convertAndDisplayVolumeInDecibels(volumePercentage){
+  const decibelsResult = document.getElementById('decibelsResult');
   var dbValue = volumeToDB(volumePercentage)
   decibelsResult.value = `${dbValue}`;
-});
+}
+
 
 function volumeToDB(volumePercentage) {
     return 10*Math.log(volumePercentage/100)/Math.log(2);
 }
+
+const addInputToProfile = () => {
+    const profileAud = document.querySelector('input.aud').files[0];  
+    const profileAudURL = URL.createObjectURL(profileAud);    
+    document.querySelector('.aud').setAttribute('src', profileAudURL);
+}
+document.getElementById('setAudioVolume').addEventListener('click', (e) => {
+  let volumePercentage = document.getElementById('volumeInput').value
+  audio.volume = volumePercentage / 100;
+  convertAndDisplayVolumeInDecibels(volumePercentage)
+});
+
+document.getElementById('uploadAudio').addEventListener('click', (e) => {
+  addInputToProfile();
+});
+
+
+var audio = document.querySelector('.aud');
+
+function getVolume() { 
+  let volumePercentage = audio.volume * 100;
+  convertAndDisplayVolumeInDecibels(volumePercentage)
+  document.getElementById('volumeInput').value = volumePercentage;
+} 
+  
+function setHalfVolume() { 
+  audio.volume = 0.5;
+} 
+  
+function setFullVolume() { 
+  audio.volume = 1.0;
+} 
+
+
+
+
 </script>
 </body>
 </html>
