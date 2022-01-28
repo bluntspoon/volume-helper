@@ -1,28 +1,26 @@
 <html>
 <head>
 <title>Volume Helper</title>
+<style>
+  div{
+    padding: 2px;
+  }
+</style>
 </head>
 <body>
-    <h1>Small Volume Helper</h1>
-Volume <input id="volume" type="number" value="" min="1" max="100"/>
-
-<div id="dbValue">dB</div>
-
-
+    <h1> Volume Helper</h1>
+    <div>Volume (1 - 100): <input id="volume" type="number" value=""/> <input id="volumeConvert" type="button" value="Convert"/></div>
+    <div>Decibels: <input id="dbValue" type="number" readonly/></div>
 <script>
-
-const volInput = document.getElementById('volume');
-
-volInput.addEventListener('keydown', (event) => {
-  const result = document.getElementById('dbValue');;
-  var dbValue = volumeToDB(event.target.value)
-  result.textContent = `${dbValue}dB`;
+const volumeConvert = document.getElementById('volumeConvert');
+volumeConvert.addEventListener('click', (event) => {
+  const result = document.getElementById('dbValue');
+  var dbValue = volumeToDB(document.getElementById('volume').value)
+  result.value = `${dbValue}`;
 });
-
 function volumeToDB(volumePercentage) {
     return 10*Math.log(volumePercentage/100)/Math.log(2);
 }
-
 </script>
 </body>
 </html>
