@@ -9,15 +9,28 @@
 </head>
 <body>
     <h1> Volume Helper</h1>
-    <div>Volume (1 - 100): <input id="volume" type="number" value=""/> <input id="volumeConvert" type="button" value="Convert"/></div>
-    <div>Decibels: <input id="dbValue" type="number" readonly/></div>
+    <div>Volume (1 - 100): <input id="volumeInput" type="number" value=""/> <input id="volumeConvert" type="button" value="Convert"/></div> <span id="errorMsg"></span>
+    <div>Decibels: <input id="decibelsResult" type="number" readonly/></div>
 <script>
+
 const volumeConvert = document.getElementById('volumeConvert');
 volumeConvert.addEventListener('click', (event) => {
-  const result = document.getElementById('dbValue');
-  var dbValue = volumeToDB(document.getElementById('volume').value)
-  result.value = `${dbValue}`;
+  document.getElementById('errorMsg').textContent = "";
+  
+  const decibelsResult = document.getElementById('decibelsResult');
+  const volumeInput = document.getElementById('volumeInput');
+
+  let volumePercentage = volumeInput.value;
+  
+  if(volumePercentage < 1){
+    document.getElementById('errorMsg').textContent = "Value must > 0"; 
+    return;
+  }
+
+  var dbValue = volumeToDB(volumePercentage)
+  decibelsResult.value = `${dbValue}`;
 });
+
 function volumeToDB(volumePercentage) {
     return 10*Math.log(volumePercentage/100)/Math.log(2);
 }
