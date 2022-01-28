@@ -5,11 +5,14 @@
   div{
     padding: 2px;
   }
+  #errorMsg {
+    color: red;
+  }
 </style>
 </head>
 <body>
     <h1> Volume Helper</h1>
-    <div>Volume (1 - 100): <input id="volumeInput" type="number" value=""/> <input id="volumeConvert" type="button" value="Convert"/></div> <span id="errorMsg"></span>
+    <div>Volume (1 - 100): <input id="volumeInput" type="number" value=""/> <input id="volumeConvert" type="button" value="Convert"/><span id="errorMsg"></span></div> 
     <div>Decibels: <input id="decibelsResult" type="number" readonly/></div>
 <script>
 
@@ -23,7 +26,7 @@ volumeConvert.addEventListener('click', (event) => {
   let volumePercentage = volumeInput.value;
   
   if(volumePercentage < 1){
-    document.getElementById('errorMsg').textContent = "Value must > 0"; 
+    document.getElementById('errorMsg').textContent = "Error: input must > 0"; 
     return;
   }
 
