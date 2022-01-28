@@ -4,16 +4,25 @@
 </head>
 <body>
     <h1>Small Volume Helper</h1>
-Volume <input type="text" value=""/>
+Volume <input id="volume" type="number" value="" min="1" max="100"/>
 
 <div id="dbValue">dB</div>
 
 
 <script>
 
+const volInput = document.getElementById('volume');
+
+volInput.addEventListener('keydown', (event) => {
+  const result = document.getElementById('dbValue');;
+  var dbValue = volumeToDB(event.target.value)
+  result.textContent = `${dbValue}dB`;
+});
+
 function volumeToDB(volumePercentage) {
     return 10*Math.log(volumePercentage/100)/Math.log(2);
 }
+
 </script>
 </body>
 </html>
